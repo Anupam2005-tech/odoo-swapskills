@@ -1,3 +1,4 @@
+// components/SidebarCompo.jsx
 import React, { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -13,13 +14,13 @@ import {
 import { cn } from "../lib/utils";
 import { useNavigate } from "react-router-dom";
 import { TbPlus, TbMenu2 } from "react-icons/tb";
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
+import { deleteUser } from "../../../connection";
 
 export default function SidebarCompo() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(window.innerWidth >= 768);
 
-  // Keep sidebar responsive
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth >= 768);
@@ -29,21 +30,30 @@ export default function SidebarCompo() {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove("token"); 
+    Cookies.remove("token");
     navigate("/");
   };
 
-  const handleDeleteAccount = () => {
-    if (window.confirm("Are you sure you want to delete your account?")) {
-      Cookies.remove("Token"); // ✅ Remove token from cookie
-      navigate("/register");
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Are you sure you want to delete your account?")) return;
+    try {
+      const result = await deleteUser();
+      if (result.success || result.status === 200) {
+        Cookies.remove("token");
+        navigate("/register");
+      } else {
+        alert("Account deletion failed. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error deleting account:", err);
+      alert("Something went wrong.");
     }
   };
 
   const links = [
     {
       label: "",
-      to: "/newswaps",
+      to: "/skillform",
       icon: (
         <div className="h-9 w-9 rounded-full bg-blue-600 flex items-center justify-center text-white">
           <TbPlus size={20} />
@@ -97,7 +107,6 @@ export default function SidebarCompo() {
                 </div>
               </div>
 
-              {/* Footer buttons */}
               <div className="flex flex-col gap-2 border-t border-gray-300 pt-4 px-1">
                 <button
                   onClick={handleDeleteAccount}

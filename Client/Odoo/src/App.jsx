@@ -40,7 +40,7 @@ export default function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/newswaps" element={<SkillForm />} />
+          <Route path="/skillform" element={<SkillForm />} />
         </Routes>
       </PageWrapper>
 
