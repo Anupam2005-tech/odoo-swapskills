@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SidebarCompo from '../Components/SidebarCompo';
+import SkillForm from './SkillForm';
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -8,11 +9,13 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen bg-white dark:bg-black">
       {/* Sidebar */}
+      
       <div className="w-[220px]">
         <SidebarCompo />
       </div>
 
       {/* Main Content */}
+      
       <div className="flex-1 px-4 md:px-10 py-6">
         {/* Header: Search & Availability Filter */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -46,6 +49,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

@@ -1,4 +1,3 @@
-// components/SidebarCompo.jsx
 import React, { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -50,15 +49,19 @@ export default function SidebarCompo() {
     }
   };
 
+  const handleNewSwapClick = () => {
+    navigate("/skillform");
+  };
+
   const links = [
     {
       label: "",
-      to: "/skillform",
       icon: (
         <div className="h-9 w-9 rounded-full bg-blue-600 flex items-center justify-center text-white">
           <TbPlus size={20} />
         </div>
       ),
+      onClick: handleNewSwapClick,
     },
     {
       label: "Account View",
@@ -101,9 +104,22 @@ export default function SidebarCompo() {
             <SidebarBody className="flex flex-col justify-between h-full gap-10">
               <div className="flex flex-col flex-1 overflow-y-auto">
                 <div className="mt-4 flex flex-col gap-2">
-                  {links.map((link, idx) => (
-                    <SidebarLink key={idx} link={link} />
-                  ))}
+                  {links.map((link, idx) =>
+                    link.onClick ? (
+                      <button
+                        key={idx}
+                        onClick={link.onClick}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-gray-200 dark:hover:bg-neutral-700 rounded text-left"
+                      >
+                        {link.icon}
+                        <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                          {link.label}
+                        </span>
+                      </button>
+                    ) : (
+                      <SidebarLink key={idx} link={link} />
+                    )
+                  )}
                 </div>
               </div>
 

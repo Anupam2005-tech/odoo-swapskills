@@ -14,7 +14,7 @@ const SkillForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-zinc-900 text-white rounded-lg shadow-lg">
+    <div className="max-w-md mx-auto p-6 bg-black  text-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4">Offer & Seek Skills</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
