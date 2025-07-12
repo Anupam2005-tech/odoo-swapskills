@@ -1,42 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { FaGoogle, FaGithub } from 'react-icons/fa';
 import FormInput from '../reuseableComponents/FormInput';
-import { Link } from 'react-router-dom';
-
-const HoverButton = ({ children, onClick }) => {
-  const radius = 100;
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const [visible, setVisible] = useState(false);
-
-  const handleMouseMove = ({ currentTarget, clientX, clientY }) => {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  };
-
-  return (
-    <motion.button
-      onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-      style={{
-        background: useMotionTemplate`
-          radial-gradient(
-            ${visible ? radius + 'px' : '0px'} circle at ${mouseX}px ${mouseY}px,
-            #3b82f6,
-            transparent 80%
-          )`
-      }}
-      className="cursor-pointer relative flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 px-4 font-medium text-white dark:text-white dark:border-zinc-800 dark:bg-zinc-600 w-full overflow-hidden"
-    >
-      {children}
-    </motion.button>
-  );
-};
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../../connection'; 
 
 const LoginForm = () => {
   const {
@@ -44,13 +10,20 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log('Login submitted:', data);
-  };
-
-  const handleSocialLogin = (provider) => {
-    console.log(`Login with ${provider}`);
+  const onSubmit = async (data) => {
+    try {
+      const response = await loginUser(data);
+      if (response?.msg === 'Login successful') {
+        // Optional: Save token or set state
+        navigate('/dashboard'); // Redirect after successful login
+      } else {
+        alert(response?.msg || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
@@ -65,22 +38,9 @@ const LoginForm = () => {
       {/* Right Side - Login Form */}
       <div className="flex flex-1 items-center justify-center bg-white dark:bg-black p-8">
         <div className="w-full max-w-md rounded-xl p-6 bg-white dark:bg-zinc-900">
-          <h2 className="text-2xl font-bold text-center mb-6 text-black dark:text-white">Log in to your account</h2>
-
-          <div className="flex flex-col gap-3 mb-6">
-            <HoverButton onClick={() => handleSocialLogin('google')}>
-              <FaGoogle /> Continue with Google
-            </HoverButton>
-            <HoverButton onClick={() => handleSocialLogin('github')}>
-              <FaGithub /> Continue with GitHub
-            </HoverButton>
-          </div>
-
-          <div className="flex items-center justify-center mb-6">
-            <div className="border-b border-gray-300 flex-grow mr-2" />
-            <span className="text-gray-500 text-sm">or</span>
-            <div className="border-b border-gray-300 flex-grow ml-2" />
-          </div>
+          <h2 className="text-2xl font-bold text-center mb-6 text-black dark:text-white">
+            Log in to your account
+          </h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormInput
@@ -101,9 +61,16 @@ const LoginForm = () => {
               required={true}
               errors={errors}
             />
+
+            <div className="text-right text-sm mt-1 mb-4">
+              <Link to="/forgot-password" className="text-blue-600 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
             <button
               type="submit"
-              className="w-full py-2 mt-4 bg-gray-950 text-white font-semibold rounded-md hover:bg-gray-800 transition-all cursor-pointer"
+              className="w-full py-2 bg-gray-950 text-white font-semibold rounded-md hover:bg-gray-800 transition-all cursor-pointer"
             >
               Log In
             </button>

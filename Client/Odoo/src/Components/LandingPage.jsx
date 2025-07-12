@@ -6,6 +6,7 @@ import MainText from './MainText'
 import Cursor from './Cursor'
 import { MovingCards } from './MovingCards'
 import Footer from './Footer'
+import SideCard from './SideCard'
 
 const LandingPage = () => {
   return (
@@ -14,6 +15,7 @@ const LandingPage = () => {
       <Cursor/>
       <GridBackground>
         <MainText />
+        <SideCard/>
       </GridBackground>
       <SecondDiv />
       <MovingCards/>

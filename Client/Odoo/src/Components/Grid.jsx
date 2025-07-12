@@ -18,7 +18,7 @@ export function GridBackground({ children }) {
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black" />
 
       {/* Center content */}
-      <div className="absolute top-1/3 z-10 p-3 text-left sm:text-center w-full px-4">
+      <div className="z-10 p-3 text-left sm:text-center w-full px-4">
         {children}
       </div>
     </div>

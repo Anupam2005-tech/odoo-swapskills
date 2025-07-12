@@ -1,7 +1,6 @@
-import { cn } from "../lib/utils";
 import React, { useState, createContext, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { TbMenu2, TbX } from "react-icons/tb"; 
+import { cn } from "../lib/utils";
+import { TbMenu2, TbX } from "react-icons/tb";
 
 const SidebarContext = createContext(undefined);
 
@@ -17,28 +16,21 @@ export const SidebarProvider = ({
   children,
   open: openProp,
   setOpen: setOpenProp,
-  animate = true
 }) => {
-  const [openState, setOpenState] = useState(false);
-
+  const [openState, setOpenState] = useState(true); // Always open since we removed animation
   const open = openProp !== undefined ? openProp : openState;
   const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider value={{ open, setOpen }}>
       {children}
     </SidebarContext.Provider>
   );
 };
 
-export const Sidebar = ({
-  children,
-  open,
-  setOpen,
-  animate
-}) => {
+export const Sidebar = ({ children, open, setOpen }) => {
   return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+    <SidebarProvider open={open} setOpen={setOpen}>
       {children}
     </SidebarProvider>
   );
@@ -53,35 +45,21 @@ export const SidebarBody = (props) => {
   );
 };
 
-export const DesktopSidebar = ({
-  className,
-  children,
-  ...props
-}) => {
-  const { open, setOpen, animate } = useSidebar();
+export const DesktopSidebar = ({ className, children, ...props }) => {
   return (
-    <motion.div
+    <div
       className={cn(
-        "h-full px-4 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] shrink-0",
+        "h-full px-2 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 shrink-0 w-[220px]",
         className
       )}
-      animate={{
-        width: animate ? (open ? "300px" : "60px") : "300px",
-      }}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
-export const MobileSidebar = ({
-  className,
-  children,
-  ...props
-}) => {
+export const MobileSidebar = ({ className, children, ...props }) => {
   const { open, setOpen } = useSidebar();
   return (
     <div
@@ -96,57 +74,38 @@ export const MobileSidebar = ({
           onClick={() => setOpen(!open)}
         />
       </div>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ x: "-100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "-100%", opacity: 0 }}
-            transition={{
-              duration: 0.3,
-              ease: "easeInOut",
-            }}
-            className={cn(
-              "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
-              className
-            )}
+      {open && (
+        <div
+          className={cn(
+            "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+            className
+          )}
+        >
+          <div
+            className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+            onClick={() => setOpen(!open)}
           >
-            <div
-              className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
-              onClick={() => setOpen(!open)}
-            >
-              <TbX />
-            </div>
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <TbX />
+          </div>
+          {children}
+        </div>
+      )}
     </div>
   );
 };
 
-export const SidebarLink = ({
-  link,
-  className,
-  ...props
-}) => {
-  const { open, animate } = useSidebar();
+export const SidebarLink = ({ link, className, ...props }) => {
   return (
     <a
       href={link.href}
-      className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)}
+      className={cn(
+        "flex items-center justify-start gap-2 group/sidebar py-2 text-neutral-700 dark:text-neutral-200 text-sm",
+        className
+      )}
       {...props}
     >
       {link.icon}
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-      >
-        {link.label}
-      </motion.span>
+      <span className="whitespace-pre">{link.label}</span>
     </a>
   );
 };

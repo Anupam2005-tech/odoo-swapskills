@@ -5,6 +5,8 @@ import LoginForm from "./Components/Login";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import LandingPage from "./Components/LandingPage";
+import Dashboard from "./Components/Dashboard";
+import SkillForm from "./Components/SkillForm";
 
 // Wrapper for page transitions and scroll reset
 const PageWrapper = ({ children }) => {
@@ -37,6 +39,8 @@ export default function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/newswaps" element={<SkillForm />} />
         </Routes>
       </PageWrapper>
 

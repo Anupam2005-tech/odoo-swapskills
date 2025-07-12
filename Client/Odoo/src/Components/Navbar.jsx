@@ -48,7 +48,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 text-white">
-            <span className="text-lg font-bold">Startup</span>
+            <span className="text-lg font-bold">SkillSwap</span>
           </Link>
         </div>
 

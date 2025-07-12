@@ -1,46 +1,80 @@
 import React from "react";
 import { InfiniteMovingCards } from "../reuseableComponents/InfiniteCard";
+import { motion } from "framer-motion";
 
 export function MovingCards() {
   return (
-    
-   <>
-   <div className="w-full h-[1px] bg-gray-600"></div>
-    <div
-      className="h-[40rem] flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-      <InfiniteMovingCards items={testimonials} direction="right" speed="slow" />
-    </div></>
+    <>
+      {/* Divider line */}
+      <div className="w-full h-[1px] bg-gray-600" />
+
+      {/* Section container */}
+      <div className="h-[40rem] flex flex-col items-center justify-center bg-white dark:bg-black dark:bg-grid-white/[0.05] relative overflow-hidden px-4">
+        
+        {/* Headline + Subheading with scroll animation */}
+        <motion.div
+          className="mb-10 text-center"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl md:text-8xl font-bold text-zinc-800 dark:text-white">
+            Explore the SkillSwap Universe
+          </h2>
+          <p className="mt-2 text-gray-600 dark:text-gray-400 text-base md:text-lg max-w-xl mx-auto">
+            Real-time insights into skill exchange trends, active users, and collaborative learning in action.
+          </p>
+        </motion.div>
+
+        {/* Infinite Card Slider with animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
+          <InfiniteMovingCards
+            items={swapHighlights}
+            direction="right"
+            speed="slow"
+          />
+        </motion.div>
+      </div>
+    </>
   );
 }
 
-const testimonials = [
+// ✨ Highlight cards
+const swapHighlights = [
   {
-    quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+    quote: "🎨 Graphic Design ↔ Web Development",
+    name: "Emily & Ravi",
+    title: "Swapped creativity for code!",
   },
   {
-    quote:
-      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-    name: "William Shakespeare",
-    title: "Hamlet",
+    quote: "🧮 Excel Mastery ↔ Digital Marketing",
+    name: "Aarav & Chloe",
+    title: "Built dashboards & campaign funnels",
   },
   {
-    quote: "All that we see or seem is but a dream within a dream.",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
+    quote: "📝 Copywriting ↔ UI/UX Design",
+    name: "Sara & Leo",
+    title: "Words met wireframes",
   },
   {
-    quote:
-      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
+    quote: "🎤 Public Speaking ↔ Python Basics",
+    name: "Maya & Arjun",
+    title: "Confidence meets code",
   },
   {
-    quote:
-      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    name: "Herman Melville",
-    title: "Moby-Dick",
+    quote: "🎹 Piano Lessons ↔ French Language",
+    name: "Olivia & Mathieu",
+    title: "Melodies and accents swapped",
+  },
+  {
+    quote: "📸 Photography ↔ Video Editing",
+    name: "Nikhil & Zoe",
+    title: "Captured and cut like pros",
   },
 ];
