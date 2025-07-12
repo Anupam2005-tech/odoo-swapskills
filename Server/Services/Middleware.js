@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const { getUser } = require("./Cookies");
+const { getUser } = require("./cookies"); // Make sure path is lowercase if your folder is named 'services'
 
 function checkSession(req, res, next) {
   try {
@@ -25,7 +25,6 @@ function checkSession(req, res, next) {
 }
 
 module.exports = {
-  urlencoded: express.urlencoded({ extended: true }),
   cookieParser: cookieParser(),
   checkSession,
 };

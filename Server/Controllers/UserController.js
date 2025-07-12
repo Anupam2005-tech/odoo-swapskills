@@ -1,6 +1,6 @@
-const User = require('../Models/UserSchema'); 
-const { setUser, getUser } = require('../Services/Cookies');
-const { checkHashPassword, hashedPassword } = require('../Services/HashPassword');
+const User = require('../models/userSchema'); 
+const { setUser, getUser } = require('../services/cookies');
+const { checkHashPassword, hashedPassword } = require('../services/hashPassword');
 
 // Create User (Register)
 async function createuserHandle(req, res) {

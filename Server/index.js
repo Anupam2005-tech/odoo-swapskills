@@ -1,22 +1,49 @@
 const express = require('express');
-const connectDB = require('./MongoDB/Mongodb');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
-require('dotenv').config();
+// Load env variables
+dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Routers
+const userRouter = require('./routers/UserRouters');
+const swapRouter = require('./routers/swaprouters'); 
+const feedbackRouter = require('./routers/feedbackrouters');
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+app.use(cookieParser());
 app.use(express.json());
-app.use("/user", Userrouter);
 
 // Routes
+app.use('/api/users', userRouter);
+app.use('/api/swaps', swapRouter);
+app.use('/api/feedback', feedbackRouter);
+
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('Skill Swap API is running...');
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URL)
+  .then(() => {
+    console.log(' Connected to MongoDB');
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(PORT, () =>
+        console.log(` Server running at http://localhost:${PORT}`)
+      );
+    }
+  })
+  .catch((err) => {
+    console.error('MongoDB connection failed:', err);
+  });
+
+module.exports = app;
